@@ -1,0 +1,21 @@
+#grid {
+  width: 518px;
+  height: 518px;
+  position: relative;
+}
+
+.tile {
+  width: 128px;
+  height: 128px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.tile-blank {
+  border: none;
+}
