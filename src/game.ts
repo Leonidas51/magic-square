@@ -6,16 +6,32 @@ interface Tile {
 class Game {
   grid: Array<Tile>
   grid_el: HTMLElement
+  controls: HTMLElement
   moves: number = 0
+  moves_disabled: boolean = false
 
   constructor() {
     this.grid = [];
     this.grid_el = document.getElementById("grid");
+    this.controls = document.getElementById("controls");
   }
 
   init(): void {
+    this.initGrid();
+
+    const restart_btn = document.createElement("button");
+    restart_btn.id = "restart";
+    restart_btn.innerHTML = "Перемешать";
+    restart_btn.addEventListener("click", this.restart.bind(this));
+
+    this.controls.appendChild(restart_btn);
+  }
+
+  initGrid(): void {
+    this.moves_disabled = false;
+
     for (let i = 1; i <= 15; i++) {
-      let new_el = document.createElement("div");
+      const new_el = document.createElement("div");
 
       new_el.className = "tile";
       new_el.innerHTML = String(i);
@@ -27,7 +43,7 @@ class Game {
       })
     }
 
-    let blank_el = document.createElement("div");
+    const blank_el = document.createElement("div");
     blank_el.className = "tile tile-blank";
     blank_el.innerHTML = "";
 
@@ -35,12 +51,16 @@ class Game {
       val: "",
       el: blank_el
     })
-
-    //this.shuffle();
+    
+    this.shuffle();
     this.drawGrid();
   }
 
   makeMove(tile_1, tile_2, by_player=true): void {
+    if (this.moves_disabled) {
+      return;
+    }
+
     [this.grid[tile_1], this.grid[tile_2]] = [this.grid[tile_2], this.grid[tile_1]];
     if (by_player) {
       this.moves++;
@@ -80,7 +100,30 @@ class Game {
   }
 
   win(): void {
-    
+    const header = document.createElement("h2"),
+          moves = document.createElement("span"),
+          container = document.createElement("div");
+
+    header.id = "victory-head";
+    header.innerHTML = "Победа!";
+
+    moves.className = "victory-text";
+    moves.innerHTML = "Ходов сделано: " + this.moves;
+
+    container.id = "victory-container";
+    container.appendChild(header);
+    container.appendChild(moves);
+
+    this.moves_disabled = true;
+    this.controls.insertBefore(container, this.controls.firstChild);
+  }
+
+  restart(): void {
+    document.getElementById("victory-container").remove();
+
+    this.grid = [];
+    this.moves = 0;
+    this.initGrid();
   }
 
   handleTileClick(e: Event): void {

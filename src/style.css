@@ -1,3 +1,11 @@
+html {
+  font-family: Verdana,Geneva,sans-serif;
+}
+
+#game {
+  display: flex;
+}
+
 #grid {
   width: 518px;
   height: 518px;
@@ -18,4 +26,33 @@
 
 .tile-blank {
   border: none;
+}
+
+#controls {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 50px;
+}
+
+#victory-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#restart {
+  padding: 4px 15px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: transparent;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.victory-text {
+  margin-bottom: 20px;
 }
